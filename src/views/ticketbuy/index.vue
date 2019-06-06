@@ -1,0 +1,405 @@
+<template>
+  <div>
+    <el-collapse-transition>
+      <div v-if="check">
+        <el-card class="card">
+          <el-form ref="form" label-width="120px">
+            <el-form-item label="地点">
+              <el-select v-model="sortForm.startcity" placeholder="请选择">
+                <el-option-group
+                  v-for="group in options"
+                  :key="group.label"
+                  :label="group.label"
+                >
+                  <el-option
+                    v-for="item in group.options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-option-group>
+              </el-select>
+              -
+              <el-select v-model="sortForm.endcity" placeholder="请选择">
+                <el-option-group
+                  v-for="group in options"
+                  :key="group.label"
+                  :label="group.label"
+                >
+                  <el-option
+                    v-for="item in group.options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-option-group>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="日期">
+              <el-col :span="11">
+                <el-date-picker
+                  v-model="sortForm.date"
+                  :picker-options="pickerOptions"
+                  align="right"
+                  placeholder="选择日期"
+                  type="date"
+                />
+              </el-col>
+            </el-form-item>
+            <el-form-item>
+              <el-button style="width: 200px;" type="primary" @click="onSubmit">查询</el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
+      </div>
+    </el-collapse-transition>
+    <el-card class="checkCard">
+      <p v-if="check">查询结果</p>
+      <el-button v-if="!check" type="text" @click="check=!check">
+        < 返回
+      </el-button>
+      <el-divider/>
+      <span v-if="first">
+        <h2 style="height: 200px">暂无结果</h2>
+      </span>
+      <el-collapse-transition>
+        <div v-show="show3">
+          <el-pagination
+            v-if="check"
+            :current-page="1"
+            :page-size="3"
+            :total="page.page_total"
+            layout="prev, pager, next"
+            background
+            @current-change="handleCurrentChange"
+          />
+          <el-card
+            v-for="(ticket, index) in ticketList"
+            v-if="((index == number && !check)||check) && ((index>=page.page_index*3-3)&&(index<=page.page_index*3-1))"
+            :key="index"
+            shadow="never"
+            style="background: #fffdf5; margin-top: 20px"
+          >
+            <div slot="header">
+              <h4 style="margin: 0px;color: #409EFF">
+                {{ ticket.startcity }}
+                <svg-icon icon-class="danxiangjiantou"/>
+                {{ ticket.endcity }}
+                <span style="float: right"><svg-icon icon-class="renminbi"/>
+                  <span style="color: #f30300">{{ ticket.price }}</span></span>
+              </h4>
+            </div>
+            <h3 v-if="check" style="margin: 0px">
+              {{ ticket.starttime }}
+              <svg-icon icon-class="jipiaodancheng" style="width: 50px"/>
+              {{ ticket.endtime }}
+              <span v-if="check" style="float: right">
+                <svg-icon icon-class="yuding"/>
+                <el-button type="text" @click="reserve(index)">预定</el-button>
+              </span>
+            </h3>
+            <el-timeline v-if="!check" :reverse="reverse">
+              <el-timeline-item
+                v-for="(activity, index) in activities"
+                :key="index"
+                :timestamp="activity.timestamp"
+              >
+                {{ activity.content }}
+              </el-timeline-item>
+            </el-timeline>
+            <p style="font-size: 10px; margin-top: 20px">{{ ticket.company }}{{ ticket.ID }}</p>
+          </el-card>
+        </div>
+      </el-collapse-transition>
+      <el-collapse-transition>
+        <el-card v-if="!check" style="background: #f5faff; margin-top: 10px">
+          <el-radio-group v-model="radio">
+            <el-radio :label="3">经济舱</el-radio>
+            <el-radio :label="6">普通舱</el-radio>
+            <el-radio :label="9">头等舱</el-radio>
+          </el-radio-group>
+          <span style="float: right; font-size: 13px">剩余：10张</span>
+          <h5>乘机人</h5>
+          <el-button
+            v-for="(item, index) in passengers"
+            :key="index"
+            size="medium"
+            @click="passcheck(index)"
+          >
+            {{ item.name }}
+          </el-button>
+          <el-popover
+            v-model="visible2"
+            placement="right"
+          >
+            <p/>
+            <div style="text-align: right; margin: 0">
+              <el-form :model="newpassenger">
+                <el-form-item label="姓名">
+                  <el-input v-model="newpassenger.name"/>
+                </el-form-item>
+                <el-form-item label="身份证号">
+                  <el-input v-model="newpassenger.number"/>
+                </el-form-item>
+              </el-form>
+              <el-button size="mini" type="text" @click="newcancel">取消</el-button>
+              <el-button size="mini" type="primary" @click="addpassenger">确定</el-button>
+            </div>
+            <el-button slot="reference" size="medium" style="color: #409EFF"> + 新增</el-button>
+          </el-popover>
+          <br>
+          <span
+            v-for="(item, index) in passengers"
+            v-if="passenger && index == passshow"
+            :key="index"
+          >
+            <el-row>
+              <el-col :span="1">
+                <svg-icon icon-class="shanchu" style="margin-top: 34px" @click="depassenger(index)"/>
+              </el-col>
+              <el-col :span="23">
+                <h4 style="margin-bottom: 4px">{{ item.name }}</h4>
+                <p style="font-size: 13px">身份证 {{ item.number }}</p>
+              </el-col>
+            </el-row>
+            <el-divider/>
+          </span>
+          <h5 style="margin-top: 30px">总金额：
+            <svg-icon icon-class="renminbi"/>
+            <span style="color: red">{{total}}</span></h5>
+          <div style="margin-top: 40px">
+            <h5>选择支付方式</h5>
+            <el-radio-group v-model="pay">
+              <el-radio :label="3">
+                <svg-icon icon-class="yinhangqia" style="width: 20px; height: 20px"/>
+              </el-radio>
+              <el-radio :label="6">
+                <svg-icon icon-class="weixin" style="width: 20px; height: 20px"/>
+              </el-radio>
+              <el-radio :label="9">
+                <svg-icon icon-class="umidd17" style="width: 20px; height: 20px"/>
+              </el-radio>
+            </el-radio-group>
+          </div>
+          <el-button style="margin-top: 100px" @click="reserve()">确认支付</el-button>
+        </el-card>
+      </el-collapse-transition>
+    </el-card>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        show3: false,
+        first: true,
+        check: true,
+        number: '1',
+        radio: '',
+        pay: '',
+        passenger: false,
+        passshow: '',
+        visible2: false,
+        total: 0,
+        page: {
+          page_index: 1,
+          page_total: 10
+        },
+        sortForm: {
+          date: '',
+          startcity: '',
+          endcity: ''
+        },
+        options: [{
+          label: '热门城市',
+          options: [{
+            value: 'Shanghai',
+            label: '上海'
+          }, {
+            value: 'Beijing',
+            label: '北京'
+          }]
+        }, {
+          label: '城市名',
+          options: [{
+            value: 'Chengdu',
+            label: '成都'
+          }, {
+            value: 'Shenzhen',
+            label: '深圳'
+          }, {
+            value: 'Guangzhou',
+            label: '广州'
+          }, {
+            value: 'Dalian',
+            label: '大连'
+          }]
+        }],
+        ticketList: [
+          {
+            startcity: '上海1',
+            endcity: '北京',
+            starttime: '19:45',
+            endtime: '21:30',
+            price: '443',
+            company: '南方航空',
+            ID: 'MU3366'
+          },
+          {
+            startcity: '上海2',
+            endcity: '北京',
+            starttime: '19:45',
+            endtime: '21:30',
+            price: '443',
+            company: '南方航空',
+            ID: 'MU3366'
+          },
+          {
+            startcity: '上海3',
+            endcity: '北京',
+            starttime: '19:45',
+            endtime: '21:30',
+            price: '443',
+            company: '南方航空',
+            ID: 'MU3366'
+          },
+          {
+            startcity: '上海4',
+            endcity: '北京',
+            starttime: '19:45',
+            endtime: '21:30',
+            price: '443',
+            company: '南方航空',
+            ID: 'MU3366'
+          },
+          {
+            startcity: '上海5',
+            endcity: '北京',
+            starttime: '19:45',
+            endtime: '21:30',
+            price: '443',
+            company: '南方航空',
+            ID: 'MU3366'
+          },
+          {
+            startcity: '上海6',
+            endcity: '北京',
+            starttime: '19:45',
+            endtime: '21:30',
+            price: '443',
+            company: '南方航空',
+            ID: 'MU3366'
+          },
+          {
+            startcity: '上海7',
+            endcity: '北京',
+            starttime: '19:45',
+            endtime: '21:30',
+            price: '443',
+            company: '南方航空',
+            ID: 'MU3366'
+          },
+          {
+            startcity: '江西8',
+            endcity: '四川',
+            starttime: '4:33',
+            endtime: '20:26',
+            price: '638',
+            company: '北方航空',
+            ID: 'NU3112'
+          },
+          {
+            startcity: '江西9',
+            endcity: '四川',
+            starttime: '4:33',
+            endtime: '20:26',
+            price: '638',
+            company: '北方航空',
+            ID: 'NU3112'
+          }
+        ],
+        activities: [{
+          content: '虹桥机场',
+          timestamp: '2018-04-13  10:25'
+        }, {
+          content: '昌北机场',
+          timestamp: '2018-04-11 12:00'
+        }],
+        passengers: [
+          { name: '李自强', number: '360481192839283' }
+        ],
+        newpassenger: { name: '', number: '' }
+      }
+    },
+    methods: {
+      freshtotal() {
+        this.total = this.passengers.length * this.ticketList[this.number].price
+      },
+      onSubmit() {
+        if (!this.show3) {
+          this.show3 = !this.show3
+          this.first = false
+          this.freshtotal()
+        }
+      },
+      onCancel() {
+        this.$message({
+          message: 'cancel!',
+          type: 'error'
+        })
+      },
+      reserve(index) {
+        this.check = !this.check
+        this.number = index
+        freshtotal()
+      },
+      passcheck(index) {
+        this.passenger = !this.passenger
+        this.passshow = index
+      },
+      depassenger(index) {
+        this.passengers.splice(index, 1)
+        this.freshtotal()
+      },
+      addpassenger() {
+        const name = this.newpassenger.name
+        const number = this.newpassenger.number
+        this.passengers.push({ name, number })
+        this.newpassenger.name = null
+        this.newpassenger.number = null
+        this.visible2 = false
+        this.freshtotal()
+      },
+      newcancel() {
+        this.visible2 = false
+        this.newpassenger.name = null
+        this.newpassenger.number = null
+      },
+      handleCurrentChange(val) {
+        this.page.page_index = val
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+  .card {
+    width: 60%;
+    height: 230px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+  }
+
+  .checkCard {
+    width: 60%;
+    background: #eeefef;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+  }
+
+</style>
+
