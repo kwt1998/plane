@@ -100,6 +100,7 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
+        console.log(response)
         const id = response
         this.$ajax.post('/updateUserInfo' + id, {
         })
