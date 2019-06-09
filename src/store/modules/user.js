@@ -102,8 +102,7 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         commit('SET_TOKEN', response)
         setToken(response)
-        this.$ajax.post('/updateUserInfo', {
-          token: this.token
+        this.$ajax.post('/updateUserInfo' + this.token, {
         })
           .then(function(response) {
             console.log(response)

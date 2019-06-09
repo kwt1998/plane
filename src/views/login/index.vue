@@ -95,8 +95,8 @@
         }
       }
       const validatePassword = (rule, value, callback) => {
-        if (value.length < 6) {
-          callback(new Error('密码不得低于6位'))
+        if (value.length < 3) {
+          callback(new Error('密码不得低于3位'))
         } else {
           callback()
         }
@@ -127,7 +127,7 @@
           password: '111111'
         },
         loginRules: {
-          username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+          // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
           password: [{ required: true, trigger: 'blur', validator: validatePassword }]
         },
         signUser: {
