@@ -123,8 +123,8 @@
       return {
         ifSign: false,
         loginForm: {
-          username: 'admin',
-          password: '111111'
+          username: '',
+          password: ''
         },
         loginRules: {
           // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -144,7 +144,7 @@
             { validator: validatePass, trigger: 'blur' }
           ],
           code2: [
-            {  validator: validatePass2, trigger: 'blur' }
+            { validator: validatePass2, trigger: 'blur' }
           ]
         },
         loading: false,

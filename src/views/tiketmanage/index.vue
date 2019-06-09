@@ -206,6 +206,15 @@
           type: 'warning'
         }).then(() => {
           rows.splice(index, 1)
+          this.$ajax.post('', {
+
+          })
+            .then(function(response) {
+              //
+            })
+            .catch(function(error) {
+              console.log(error)
+            })
           this.$message({
             type: 'success',
             message: '删除成功!'

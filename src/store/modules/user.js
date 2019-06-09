@@ -100,9 +100,8 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        commit('SET_TOKEN', response)
-        setToken(response)
-        this.$ajax.post('/updateUserInfo' + this.token, {
+        const id = response
+        this.$ajax.post('/updateUserInfo' + id, {
         })
           .then(function(response) {
             console.log(response)
@@ -114,6 +113,8 @@ const actions = {
             commit('SET_AGE', data.age)
             commit('SET_MAIL', data.mail)
             commit('SET_PHONE', data.phone)
+            commit('SET_TOKEN', id)
+            setToken(id)
           })
           .catch(function(error) {
             console.log(error)

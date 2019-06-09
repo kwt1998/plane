@@ -5,6 +5,8 @@ export function login(data) {
   return request({
     url: '/UserLogin',
     method: 'post',
+    // name: qs.stringify(data.username),
+    // password: qs.stringify(data.password)
     data: qs.stringify(data)
   })
 }
