@@ -102,24 +102,22 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         // console.log(response)
         const id = response[1]
-        // this.$ajax.post('/UserById', {
-        //   id: '1'
-        // })
-        //   .then(function(response) {
-        //     console.log(response)
-        //     const { data } = response
-        //     commit('SET_NAME', data.name)
-        //     commit('SET_AVATAR', data.avatar)
-        //     commit('SET_SEX', data.sex)
-        //     commit('SET_AGE', data.age)
-        //     commit('SET_MAIL', data.mail)
-        //     commit('SET_PHONE', data.phone)
-        //     commit('SET_TOKEN', id)
-        //     setToken(id)
-        //   })
-        //   .catch(function(error) {
-        //     console.log(error)
-        //   })
+        getInfo('1')
+          .then(function(response) {
+            console.log(response)
+            const { data } = response
+            commit('SET_NAME', data.name)
+            commit('SET_AVATAR', data.avatar)
+            commit('SET_SEX', data.sex)
+            commit('SET_AGE', data.age)
+            commit('SET_MAIL', data.mail)
+            commit('SET_PHONE', data.phone)
+            commit('SET_TOKEN', id)
+            setToken(id)
+          })
+          .catch(function(error) {
+            console.log(error)
+          })
         // const { data } = response
         // commit('SET_TOKEN', response)
         // commit('SET_NAME', '111')
