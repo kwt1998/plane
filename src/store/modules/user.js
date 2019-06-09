@@ -3,7 +3,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import constantRoutes from '@/router/index'
 import Layout from '@/layout'
-
+import qs from 'qs'
 const state = {
   token: getToken(),
   name: '',
@@ -100,16 +100,16 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        console.log(response)
+        // console.log(response)
         const id = response[1]
-        this.$ajax.post('/UserById' + id, {
-        })
+        this.$ajax.post('/UserById', qs.stringify({
+          id: id
+        }))
           .then(function(response) {
             console.log(response)
             const { data } = response
             commit('SET_NAME', data.name)
             commit('SET_AVATAR', data.avatar)
-            commit('SET_TYPE', data.type)
             commit('SET_SEX', data.sex)
             commit('SET_AGE', data.age)
             commit('SET_MAIL', data.mail)
