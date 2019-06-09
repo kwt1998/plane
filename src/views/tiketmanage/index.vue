@@ -206,7 +206,7 @@
           type: 'warning'
         }).then(() => {
           rows.splice(index, 1)
-          this.$ajax.post('', {
+          this.$ajax.post('/UserInfo', {
 
           })
             .then(function(response) {

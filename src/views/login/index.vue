@@ -214,6 +214,15 @@
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            this.$ajax.post('/UserById', {
+              id: '1'
+            })
+              .then(function(response) {
+                console.log(response)
+              })
+              .catch(function(error) {
+                console.log(error)
+              })
             this.$message({
               message: '恭喜你，注册成功',
               type: 'success'
