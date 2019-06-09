@@ -101,8 +101,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         console.log(response)
-        const id = response
-        this.$ajax.post('/updateUserInfo' + id, {
+        const id = response[1]
+        this.$ajax.post('/UserById' + id, {
         })
           .then(function(response) {
             console.log(response)
