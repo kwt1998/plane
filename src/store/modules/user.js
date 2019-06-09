@@ -4,6 +4,7 @@ import { resetRouter } from '@/router'
 import constantRoutes from '@/router/index'
 import Layout from '@/layout'
 import qs from 'qs'
+
 const state = {
   token: getToken(),
   name: '',
@@ -102,18 +103,18 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         // console.log(response)
         const id = response[1]
+        commit('SET_TYPE', response[0])
+        commit('SET_TOKEN', id)
+        setToken(id)
         getInfo('1')
           .then(function(response) {
             console.log(response)
-            const { data } = response
-            commit('SET_NAME', data.name)
-            commit('SET_AVATAR', data.avatar)
-            commit('SET_SEX', data.sex)
-            commit('SET_AGE', data.age)
-            commit('SET_MAIL', data.mail)
-            commit('SET_PHONE', data.phone)
-            commit('SET_TOKEN', id)
-            setToken(id)
+            commit('SET_NAME', response.name)
+            commit('SET_AVATAR', response.avatar)
+            commit('SET_SEX', response.sex)
+            commit('SET_AGE', response.age)
+            commit('SET_MAIL', response.mail)
+            commit('SET_PHONE', response.phone)
           })
           .catch(function(error) {
             console.log(error)
@@ -142,21 +143,10 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }){
+  getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        console.log(response)
-        const { data } = response
-
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
+      getInfo('1').then(response => {
+        resolve()
       }).catch(error => {
         reject(error)
       })
