@@ -12,58 +12,71 @@
     <!--<el-button type="text">修改</el-button>-->
     <div class="message">
       <el-card class="messagebox" shadow="hover">
-        <span class="p">性别：</span>
-        <el-radio-group v-model="sex" disabled size="mini">
-          <el-radio-button label="男"></el-radio-button>
-          <el-radio-button label="女"></el-radio-button>
-        </el-radio-group>
+        <span class="p">性别：{{sex}}</span>
+
       </el-card>
       <el-card class="messagebox" shadow="hover">
-        <span class="p">年龄：18</span>
+        <span class="p">年龄：{{age}}</span>
         <el-popover
           placement="bottom">
           <div style="text-align: right; margin: 0">
-            <el-input v-model="input" placeholder="请输入内容"/>
-            <el-button type="primary" size="mini" @click="visible2 = false">确定修改</el-button>
+            <el-input v-model="ageChange" placeholder="请输入内容"/>
+            <el-button type="primary" size="mini" @click="agechange" style="margin-top: 5px">确定修改</el-button>
           </div>
           <el-button slot="reference" type="text" style="padding: unset;float: right">修改</el-button>
         </el-popover>
       </el-card>
       <el-card class="messagebox" shadow="hover">
-        <span class="p">电话：18888888888</span>
+        <span class="p">电话：{{phone}}</span>
         <el-popover
           placement="bottom">
           <div style="text-align: right; margin: 0">
-            <el-input v-model="input" placeholder="请输入内容"/>
-            <el-button type="primary" size="mini" @click="visible2 = false">确定修改</el-button>
+            <el-input v-model="phoneChange" placeholder="请输入内容"/>
+            <el-button type="primary" size="mini" @click="phonechange">确定修改</el-button>
           </div>
           <el-button slot="reference" type="text" style="padding: unset;float: right">修改</el-button>
         </el-popover>
       </el-card>
       <el-card class="messagebox" shadow="hover">
-        <span class="p">邮箱：5556464894@qq.com</span>
+        <span class="p">邮箱：{{mail}}</span>
         <el-popover
           placement="bottom">
           <div style="text-align: right; margin: 0">
-            <el-input v-model="input" placeholder="请输入内容"/>
-            <el-button type="primary" size="mini" @click="visible2 = false">确定修改</el-button>
+            <el-input v-model="mailChange" placeholder="请输入内容"/>
+            <el-button type="primary" size="mini" @click="mailchange">确定修改</el-button>
           </div>
           <el-button slot="reference" type="text" style="padding: unset; float: right">修改</el-button>
         </el-popover>
       </el-card>
       <el-row :gutter="40" style="width: 43%; margin-left: auto;margin-right: auto;margin-top: 30px">
         <el-col :span="12">
-          <el-card class="halfmessagebox" shadow="hover" >
-            <el-button  type="text" style="padding: unset;">修改密码</el-button>
+          <el-card class="halfmessagebox" shadow="hover">
+            <el-button type="text" style="padding: unset;" @click="passchange">修改密码</el-button>
           </el-card>
         </el-col>
         <el-col :span="12">
           <el-card class="halfmessagebox" shadow="hover">
-            <el-button  type="text" style="padding: unset;">注册新账号</el-button>
+            <el-button type="text" style="padding: unset;" @click="logout">注册新账号</el-button>
           </el-card>
         </el-col>
       </el-row>
     </div>
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="400px"
+      :before-close="handleClose">
+      <span slot="title">修改密码</span>
+      <h4>请输入原始密码</h4>
+      <el-input v-model="originPass" type="password"/>
+      <h4>请输入修改后的密码</h4>
+      <el-input v-model="changePass" type="password"/>
+      <h4>请再次输入</h4>
+      <el-input v-model="changePass2" type="password"/>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="sendPass">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -74,12 +87,61 @@
     name: 'Homepage',
     computed: {
       ...mapGetters([
-        'name'
+        'name',
+        'mail',
+        'phone',
+        'age',
+        'sex'
       ])
     },
-    data(){
-      return{
-        sex: '男'
+    data() {
+      return {
+        ageChange: '',
+        mailChange: '',
+        phoneChange: '',
+        originPass: '',
+        changePass: '',
+        changePass2: '',
+        dialogVisible: false
+      }
+    },
+    methods: {
+      agechange() {
+        sessionStorage.setItem('age', this.ageChange)
+        this.$router.go(0)
+      },
+      mailchange() {
+        sessionStorage.setItem('mail', this.mailChange)
+        this.$router.go(0)
+      },
+      phonechange() {
+        sessionStorage.setItem('phone', this.phoneChange)
+        this.$router.go(0)
+      },
+      passchange() {
+        this.dialogVisible = true
+      },
+      sendPass() {
+        this.$confirm('确认修改密码?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          this.dialogVisible = false
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消修改'
+          })
+        })
+      },
+      async logout() {
+        await this.$store.dispatch('user/logout')
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
       }
     }
   }
@@ -87,14 +149,15 @@
 
 <style scoped>
   .messagebox {
-     border-radius: 20px;
-     width: 40%;
-     margin-left: auto;
-     margin-right: auto;
-     margin-top: 15px;
-     padding: 0px;
-     background: #f4f4f5;
-   }
+    border-radius: 20px;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    padding: 0px;
+    background: #f4f4f5;
+  }
+
   .halfmessagebox {
     border-radius: 20px;
     text-align: center;
@@ -103,6 +166,11 @@
     margin-top: 15px;
     padding: 0px;
     background: #bfcbd9;
+  }
+
+  .block {
+    background-color: #DCDFE6;
+    height: 800px;
   }
 
   .message {

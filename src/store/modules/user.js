@@ -8,7 +8,11 @@ const state = {
   token: getToken(),
   name: '',
   avatar: '',
-  type: ''
+  mail: '',
+  sex: '',
+  type: '',
+  age: '',
+  phone: ''
 }
 
 const mutations = {
@@ -23,13 +27,30 @@ const mutations = {
   },
   SET_TYPE: (state, type) => {
     state.type = type
+  },
+  SET_MAIL: (state, mail) => {
+    state.mail = mail
+  },
+  SET_SEX: (state, sex) => {
+    state.sex = sex
+  },
+  SET_AGE: (state, age) => {
+    state.age = age
+  },
+  SET_PHONE: (state, phone) => {
+    state.phone = phone
   }
 }
 
 const actions = {
   setroutes({ commit }) {
     return new Promise((resolve) => {
-      console.log(sessionStorage.getItem('type'))
+      commit('SET_NAME', sessionStorage.getItem('name'))
+      commit('SET_TYPE', sessionStorage.getItem('type'))
+      commit('SET_SEX', sessionStorage.getItem('sex'))
+      commit('SET_AGE', sessionStorage.getItem('age'))
+      commit('SET_MAIL', sessionStorage.getItem('mail'))
+      commit('SET_PHONE', sessionStorage.getItem('phone'))
       if (sessionStorage.getItem('type') === '1') {
         console.log('3')
         const a = [{
@@ -43,29 +64,29 @@ const actions = {
             meta: { title: '个人主页', icon: 'user' }
           }]
         },
-        {
-          path: '/',
-          component: Layout,
-          name: 'Ticketbuy',
-          children: [{
-            path: 'ticketbuy',
+          {
+            path: '/',
+            component: Layout,
             name: 'Ticketbuy',
-            component: () => import('@/views/ticketbuy/index'),
-            meta: { title: '开始购票', icon: 'table' }
+            children: [{
+              path: 'ticketbuy',
+              name: 'Ticketbuy',
+              component: () => import('@/views/ticketbuy/index'),
+              meta: { title: '开始购票', icon: 'table' }
+            }]
+          },
+          {
+            path: '/',
+            component: Layout,
+            children: [
+              {
+                path: 'form',
+                name: 'Form',
+                component: () => import('@/views/form/index'),
+                meta: { title: '查看订单', icon: 'form' }
+              }
+            ]
           }]
-        },
-        {
-          path: '/',
-          component: Layout,
-          children: [
-            {
-              path: 'form',
-              name: 'Form',
-              component: () => import('@/views/form/index'),
-              meta: { title: '查看订单', icon: 'form' }
-            }
-          ]
-        }]
         constantRoutes.addRoutes(a)
         for (var i = 0; i < a.length; i++) {
           constantRoutes.options.routes.push(a[i])
@@ -85,9 +106,17 @@ const actions = {
         commit('SET_NAME', '111')
         commit('SET_AVATAR', '111')
         commit('SET_TYPE', '1')
+        commit('SET_SEX', '男')
+        commit('SET_AGE', '18')
+        commit('SET_MAIL', '786005261@qq.com')
+        commit('SET_PHONE', '18379258365')
         setToken(response)
-        sessionStorage.setItem('user', state.name)
+        sessionStorage.setItem('name', state.name)
         sessionStorage.setItem('type', state.type)
+        sessionStorage.setItem('mail', state.mail)
+        sessionStorage.setItem('phone', state.phone)
+        sessionStorage.setItem('sex', state.sex)
+        sessionStorage.setItem('age', state.age)
         dispatch('setroutes')
         resolve()
       }).catch(error => {

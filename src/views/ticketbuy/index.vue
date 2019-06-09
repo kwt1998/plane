@@ -1,11 +1,14 @@
 <template>
-  <div>
+  <div style="background-color: #DCDFE6; height: 1080px">
+    <span style="background-color: #DCDFE6">.</span>
     <el-collapse-transition>
       <div v-if="check">
         <el-card class="card">
+          <h3 style="margin-top: 0px; text-align: center">开始购票</h3>
+          <el-divider></el-divider>
           <el-form ref="form" label-width="120px">
             <el-form-item label="地点">
-              <el-select v-model="sortForm.startcity" placeholder="请选择">
+              <el-select v-model="sortForm.startcity" placeholder="出发">
                 <el-option-group
                   v-for="group in options"
                   :key="group.label"
@@ -20,7 +23,7 @@
                 </el-option-group>
               </el-select>
               -
-              <el-select v-model="sortForm.endcity" placeholder="请选择">
+              <el-select v-model="sortForm.endcity" placeholder="到达">
                 <el-option-group
                   v-for="group in options"
                   :key="group.label"
@@ -170,18 +173,18 @@
           <div style="margin-top: 40px">
             <h5>选择支付方式</h5>
             <el-radio-group v-model="pay">
-              <el-radio :label="3">
+              <el-radio :label="1">
                 <svg-icon icon-class="yinhangqia" style="width: 20px; height: 20px"/>
               </el-radio>
-              <el-radio :label="6">
+              <el-radio :label="2">
                 <svg-icon icon-class="weixin" style="width: 20px; height: 20px"/>
               </el-radio>
-              <el-radio :label="9">
+              <el-radio :label="3">
                 <svg-icon icon-class="umidd17" style="width: 20px; height: 20px"/>
               </el-radio>
             </el-radio-group>
           </div>
-          <el-button style="margin-top: 100px" @click="reserve()">确认支付</el-button>
+          <el-button style="margin-top: 100px" @click="submit()">确认支付</el-button>
         </el-card>
       </el-collapse-transition>
     </el-card>
@@ -337,10 +340,14 @@
         this.total = this.passengers.length * this.ticketList[this.number].price
       },
       onSubmit() {
-        if (!this.show3) {
-          this.show3 = !this.show3
-          this.first = false
-          this.freshtotal()
+        if (this.sortForm.date && this.sortForm.endcity && this.sortForm.startcity) {
+          if (!this.show3) {
+            this.show3 = !this.show3
+            this.first = false
+            this.freshtotal()
+          }
+        } else {
+          this.$message.error('请输入完整信息')
         }
       },
       onCancel() {
@@ -353,6 +360,16 @@
         this.check = !this.check
         this.number = index
         freshtotal()
+      },
+      submit() {
+        if (this.pay) {
+        }
+        else{
+          this.$message({
+            type: 'error',
+            message: '请选择支付方式'
+          })
+        }
       },
       passcheck(index) {
         this.passenger = !this.passenger
@@ -387,7 +404,7 @@
 
   .card {
     width: 60%;
-    height: 230px;
+    height: 300px;
     margin-right: auto;
     margin-left: auto;
     margin-top: 20px;

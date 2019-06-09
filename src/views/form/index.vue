@@ -1,13 +1,13 @@
 <template>
   <div style="background: #f4f4f5; height: 1000px">
-    <span style="margin-bottom: 20px"></span>
+    <span style="margin-bottom: 20px">.</span>
     <el-card class="userCard">
       <h3 style="margin: 10px; text-align: center;">机票订单</h3>
       <el-divider></el-divider>
       <h4>
         <svg-icon icon-class="yonghu" style="width: 25px; height: 25px"/>
-        kwt1234414已登录
-        <el-button style="float: right" type="text">切换 ></el-button>
+        {{name}}已登录
+        <el-button style="float: right" type="text" @click="logout">切换 ></el-button>
       </h4>
     </el-card>
     <el-card class="userCard" style="height: 650px">
@@ -46,9 +46,15 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   export default {
-    beforeCreate() {
-      console.log('读取订单')
+    // beforeCreate() {
+    //   console.log('读取订单')
+    // },
+    computed: {
+      ...mapGetters([
+        'name'
+      ])
     },
     data() {
       return {
@@ -107,6 +113,10 @@
             message: '已取消删除'
           })
         })
+      },
+      async logout() {
+        await this.$store.dispatch('user/logout')
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
       }
     }
   }
