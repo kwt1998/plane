@@ -46,15 +46,22 @@ service.interceptors.response.use(
     const res = response.data
 
     // if the custom code is not 20000, it is judged as an error.
-    if (res !== 20000) {
-      Message({
-        message: res.message || 'error',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
+    if (res <= 0) {
+      if (res === 0) {
+        Message({
+          message: '用户名不存在！',
+          type: 'error',
+          duration: 5 * 1000
+        })
+      } else if (res === -1) {
+        Message({
+          message: '密码错误！！',
+          type: 'error',
+          duration: 5 * 1000
+        })
+      }
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res === 50008 || res === 50012 || res === 50014) {
+      /*   if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
         // to re-login
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
           confirmButtonText: 'Re-Login',
@@ -65,7 +72,7 @@ service.interceptors.response.use(
             location.reload()
           })
         })
-      }
+      }*/
       return Promise.reject(res.message || 'error')
     } else {
       return res

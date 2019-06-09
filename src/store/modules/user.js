@@ -100,17 +100,34 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        // console.log(response)
-        // const { data } = response
         commit('SET_TOKEN', response)
-        commit('SET_NAME', '111')
-        commit('SET_AVATAR', '111')
-        commit('SET_TYPE', '1')
-        commit('SET_SEX', '男')
-        commit('SET_AGE', '18')
-        commit('SET_MAIL', '786005261@qq.com')
-        commit('SET_PHONE', '18379258365')
         setToken(response)
+        this.$ajax.post('/updateUserInfo', {
+          token: this.token
+        })
+          .then(function(response) {
+            console.log(response)
+            const { data } = response
+            commit('SET_NAME', data.name)
+            commit('SET_AVATAR', data.avatar)
+            commit('SET_TYPE', data.type)
+            commit('SET_SEX', data.sex)
+            commit('SET_AGE', data.age)
+            commit('SET_MAIL', data.mail)
+            commit('SET_PHONE', data.phone)
+          })
+          .catch(function(error) {
+            console.log(error)
+          })
+        // const { data } = response
+        // commit('SET_TOKEN', response)
+        // commit('SET_NAME', '111')
+        // commit('SET_AVATAR', '111')
+        // commit('SET_TYPE', '1')
+        // commit('SET_SEX', '男')
+        // commit('SET_AGE', '18')
+        // commit('SET_MAIL', '786005261@qq.com')
+        // commit('SET_PHONE', '18379258365')
         sessionStorage.setItem('name', state.name)
         sessionStorage.setItem('type', state.type)
         sessionStorage.setItem('mail', state.mail)
@@ -126,7 +143,7 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getInfo({ commit, state }){
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         console.log(response)

@@ -184,7 +184,7 @@
     methods: {
       onSubmit() {
         if (this.sortForm.date || this.sortForm.endcity || this.sortForm.startcity) {
-          this.$ajax.post('', {
+          this.$ajax.post('/{id}', {
             data: this.sortForm.date,
             endcity: this.sortForm.endcity,
             startcity: this.sortForm.startcity
