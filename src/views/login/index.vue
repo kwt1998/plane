@@ -52,22 +52,34 @@
 
       </el-form>
     </div>
-    <div v-if="ifSign" class="login-form">
+    <div v-if="ifSign" class="sign-form">
       <div class="title-container">
         <h3 class="title">注册</h3>
       </div>
-      <el-form  label-position="left" status-icon ref="signForm" :rules="signRules" :model="signUser">
+      <el-form label-position="left" status-icon ref="signForm" :rules="signRules" :model="signUser">
         <h4>用户名：</h4>
         <el-form-item prop="name">
-          <el-input  v-model="signUser.name" placeholder="请输入内容"  clearable ></el-input>
+          <el-input v-model="signUser.name" placeholder="请输入内容" clearable></el-input>
         </el-form-item>
         <h4>密码：</h4>
-        <el-form-item  prop="code">
-          <el-input v-model="signUser.code" placeholder="请输入内容"  show-password></el-input>
+        <el-form-item prop="code">
+          <el-input v-model="signUser.code" placeholder="请输入内容" show-password></el-input>
         </el-form-item>
         <h4>确认密码：</h4>
-        <el-form-item  prop="code2">
-          <el-input v-model="signUser.code2" placeholder="请输入内容"  show-password></el-input>
+        <el-form-item prop="code2">
+          <el-input v-model="signUser.code2" placeholder="请输入内容" show-password></el-input>
+        </el-form-item>
+        <h4>邮箱</h4>
+        <el-form-item >
+          <el-input v-model="signUser.mail" placeholder="请输入内容" ></el-input>
+        </el-form-item>
+        <h4>电话</h4>
+        <el-form-item >
+          <el-input v-model="signUser.phone" placeholder="请输入内容" ></el-input>
+        </el-form-item>
+        <h4>年龄</h4>
+        <el-form-item >
+          <el-input v-model="signUser.age" placeholder="请输入内容" ></el-input>
         </el-form-item>
         <el-button type="primary" @click="onSubmit('signForm')">提交</el-button>
         <el-button @click="resetForm('signForm')">返回</el-button>
@@ -79,6 +91,7 @@
 <script>
   import { validUsername } from '@/utils/validate'
   import { mapGetters } from 'vuex'
+
   export default {
     name: 'Login',
     computed: {
@@ -133,11 +146,15 @@
         signUser: {
           name: '',
           code: '',
-          code2: ''
+          code2: '',
+          mail: '',
+          phone: '',
+          age: '',
+          sex: ''
         },
         signRules: {
           name: [
-            { required: true,message: '请输入用户名', trigger: 'blur' },
+            { required: true, message: '请输入用户名', trigger: 'blur' },
             { min: 3, max: 5, message: '长度在 3 到 15 个字符', trigger: 'blur' }
           ],
           code: [
@@ -191,6 +208,7 @@
         })
       },
       handleSign() {
+
         this.ifSign = true
       },
       onSubmit(formName) {
@@ -259,6 +277,7 @@
       border-radius: 5px;
       color: #454545;
     }
+
     h4 {
       margin-bottom: 5px;
       color: #181818;
@@ -282,6 +301,14 @@
       width: 520px;
       max-width: 100%;
       padding: 160px 35px 0;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .sign-form {
+      osition: relative;
+      width: 520px;
+      max-width: 100%;
+      padding: 50px 35px 0;
       margin: 0 auto;
       overflow: hidden;
     }
