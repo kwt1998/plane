@@ -15,7 +15,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { getfirstpage } from '../../api/user'
+  import { getline, getcircle } from '../../api/user'
   export default {
     name: 'Firstpage',
     computed: {
@@ -28,7 +28,9 @@
         year: 0,
         month: 0,
         data1: [],
-        data2: []
+        data2: [],
+        circledata1: [],
+        circledata2: []
       }
     },
     mounted() {
@@ -42,7 +44,7 @@
       drawLine() {
         // 基于准备好的dom，初始化echarts实例
         const myChart = this.$echarts.init(document.getElementById('myChart'))
-        getfirstpage().then(response => {
+        getline().then(response => {
           this.data1 = response[0]
           this.data2 = response[1]
         })
@@ -129,6 +131,10 @@
       },
       drawCircle() {
         const myChart2 = this.$echarts.init(document.getElementById('myChart2'))
+        getcircle().then(response => {
+          this.circledata1 = response[0]
+          this.circledata2 = response[1]
+        })
         // 绘制图表
         myChart2.setOption({
           tooltip: {
@@ -158,9 +164,9 @@
                 }
               },
               data: [
-                { value: 335, name: '经济舱', selected: true },
-                { value: 679, name: '普通舱' },
-                { value: 1548, name: '头等舱' }
+                { value: this.circledata1[0], name: '经济舱', selected: true },
+                { value: this.circledata1[1], name: '普通舱' },
+                { value: this.circledata1[2], name: '头等舱' }
               ]
             },
             {
@@ -212,9 +218,9 @@
                 }
               },
               data: [
-                { value: 335, name: '经济舱' },
-                { value: 310, name: '普通舱' },
-                { value: 234, name: '头等舱' }
+                { value: this.circledata2[0], name: '经济舱' },
+                { value: this.circledata2[1], name: '普通舱' },
+                { value: this.circledata2[2], name: '头等舱' }
               ]
             }
           ]

@@ -91,7 +91,7 @@
 <script>
   import { validUsername } from '@/utils/validate'
   import { mapGetters } from 'vuex'
-
+  import { sign } from '../../api/user'
   export default {
     name: 'Login',
     computed: {
@@ -214,20 +214,13 @@
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$ajax.post('/UserById', {
-              id: '1'
-            })
-              .then(function(response) {
-                console.log(response)
+            sign(this.signUser).then(response => {
+              this.$message({
+                message: '恭喜你，注册成功',
+                type: 'success'
               })
-              .catch(function(error) {
-                console.log(error)
-              })
-            this.$message({
-              message: '恭喜你，注册成功',
-              type: 'success'
+              return true
             })
-            return true
           } else {
             this.$message({
               message: '注册失败，请检查你的输入',
