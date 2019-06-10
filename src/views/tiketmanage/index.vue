@@ -96,6 +96,7 @@
 </template>
 
 <script>
+  import { deleteticket } from '../../api/user'
   export default {
     data() {
       return {
@@ -184,17 +185,9 @@
     methods: {
       onSubmit() {
         if (this.sortForm.date || this.sortForm.endcity || this.sortForm.startcity) {
-          this.$ajax.post('/{id}', {
-            data: this.sortForm.date,
-            endcity: this.sortForm.endcity,
-            startcity: this.sortForm.startcity
+          searchticket(this.tableData).then(response => {
+            this.ticketList = response
           })
-            .then(function(response) {
-               //
-            })
-            .catch(function(error) {
-              console.log(error)
-            })
         } else {
           this.$message.error('请至少输入一项查询信息')
         }
@@ -206,18 +199,11 @@
           type: 'warning'
         }).then(() => {
           rows.splice(index, 1)
-          this.$ajax.post('/UserInfo', {
-
-          })
-            .then(function(response) {
-              //
+          deleteticket(this.tableData[index].id).then(response => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
             })
-            .catch(function(error) {
-              console.log(error)
-            })
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
           })
         }).catch(() => {
           this.$message({

@@ -15,7 +15,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-
+  import { getfirstpage } from '../../api/user'
   export default {
     name: 'Firstpage',
     computed: {
@@ -26,7 +26,9 @@
     data() {
       return {
         year: 0,
-        month: 0
+        month: 0,
+        data1: [],
+        data2: []
       }
     },
     mounted() {
@@ -40,6 +42,10 @@
       drawLine() {
         // 基于准备好的dom，初始化echarts实例
         const myChart = this.$echarts.init(document.getElementById('myChart'))
+        getfirstpage().then(response => {
+          this.data1 = response[0]
+          this.data2 = response[1]
+        })
         // 绘制图表
         myChart.setOption({
           tooltip: {
@@ -100,7 +106,8 @@
             {
               name: '销售票数',
               type: 'bar',
-              data: [1000, 1234, 1598, 1987, 2444, 2114, 1456, 1622, 1241, 987, 1664, 2241],
+              // data: [1000, 1234, 1598, 1987, 2444, 2114, 1456, 1622, 1241, 987, 1664, 2241],
+              data: this.data1,
               itemStyle: {
                 normal: {
                   color: '#5dacf6'
@@ -114,7 +121,8 @@
               name: '销售额',
               type: 'line',
               yAxisIndex: 1,
-              data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+              // data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+              data: this.data2
             }
           ]
         })

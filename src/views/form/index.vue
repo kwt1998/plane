@@ -47,10 +47,13 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import { getform, deleteform } from '../../api/user'
   export default {
-    // beforeCreate() {
-    //   console.log('读取订单')
-    // },
+    mounted() {
+      getform (sessionStorage.getItem('id')).then(response => {
+        this.ticketList = response
+      })
+    },
     computed: {
       ...mapGetters([
         'name'
@@ -69,28 +72,6 @@
             ID: 'MU3366',
             buytime: '04月07日 19：53',
             buyusers: [{ name: '李大状' }, { name: '王小强' }]
-          },
-          {
-            startcity: '江西',
-            endcity: '四川',
-            starttime: '4:33',
-            endtime: '20:26',
-            price: '638',
-            company: '北方航空',
-            ID: 'NU3112',
-            buytime: '04月07日 19：53',
-            buyusers: [{ name: '赵四' }, { name: '王五' }]
-          },
-          {
-            startcity: '江西',
-            endcity: '四川',
-            starttime: '4:33',
-            endtime: '20:26',
-            price: '638',
-            company: '北方航空',
-            ID: 'NU3112',
-            buytime: '04月07日 19：53',
-            buyusers: [{ name: 'kwt' }]
           }
         ]
       }
@@ -102,10 +83,12 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.ticketList.splice(index, 1)
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
+          deleteform().then(response => {
+            this.ticketList.splice(index, 1)
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
           })
         }).catch(() => {
           this.$message({

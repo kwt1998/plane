@@ -19,7 +19,34 @@ export function getInfo(token) {
     params: qs.stringify(token)
   })
 }
-
+export function searchticket(data) {
+  return request({
+    url: '/search',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+export function deleteticket(id) {
+  return request({
+    url: '/search',
+    method: 'post',
+    params: qs.stringify(id)
+  })
+}
+export function getform(id) {
+  return request({
+    url: '/search',
+    method: 'post',
+    params: qs.stringify(id)
+  })
+}
+export function deleteform(id) {
+  return request({
+    url: '/search',
+    method: 'post',
+    params: qs.stringify(id)
+  })
+}
 export function logout() {
   return request({
     url: '/user/logout',

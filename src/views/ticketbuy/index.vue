@@ -117,9 +117,9 @@
       <el-collapse-transition>
         <el-card v-if="!check" style="background: #f5faff; margin-top: 10px">
           <el-radio-group v-model="radio">
-            <el-radio :label="3">经济舱</el-radio>
-            <el-radio :label="6">普通舱</el-radio>
-            <el-radio :label="9">头等舱</el-radio>
+            <el-radio :label="1">经济舱</el-radio>
+            <el-radio :label="2">普通舱</el-radio>
+            <el-radio :label="3">头等舱</el-radio>
           </el-radio-group>
           <span style="float: right; font-size: 13px">剩余：10张</span>
           <h5>乘机人</h5>
@@ -192,6 +192,7 @@
 </template>
 
 <script>
+  import { searchticket } from '../../api/user'
   export default {
     data() {
       return {
@@ -240,87 +241,15 @@
           }]
         }],
         ticketList: [
-          {
-            startcity: '上海1',
-            endcity: '北京',
-            starttime: '19:45',
-            endtime: '21:30',
-            price: '443',
-            company: '南方航空',
-            ID: 'MU3366'
-          },
-          {
-            startcity: '上海2',
-            endcity: '北京',
-            starttime: '19:45',
-            endtime: '21:30',
-            price: '443',
-            company: '南方航空',
-            ID: 'MU3366'
-          },
-          {
-            startcity: '上海3',
-            endcity: '北京',
-            starttime: '19:45',
-            endtime: '21:30',
-            price: '443',
-            company: '南方航空',
-            ID: 'MU3366'
-          },
-          {
-            startcity: '上海4',
-            endcity: '北京',
-            starttime: '19:45',
-            endtime: '21:30',
-            price: '443',
-            company: '南方航空',
-            ID: 'MU3366'
-          },
-          {
-            startcity: '上海5',
-            endcity: '北京',
-            starttime: '19:45',
-            endtime: '21:30',
-            price: '443',
-            company: '南方航空',
-            ID: 'MU3366'
-          },
-          {
-            startcity: '上海6',
-            endcity: '北京',
-            starttime: '19:45',
-            endtime: '21:30',
-            price: '443',
-            company: '南方航空',
-            ID: 'MU3366'
-          },
-          {
-            startcity: '上海7',
-            endcity: '北京',
-            starttime: '19:45',
-            endtime: '21:30',
-            price: '443',
-            company: '南方航空',
-            ID: 'MU3366'
-          },
-          {
-            startcity: '江西8',
-            endcity: '四川',
-            starttime: '4:33',
-            endtime: '20:26',
-            price: '638',
-            company: '北方航空',
-            ID: 'NU3112'
-          },
-          {
-            startcity: '江西9',
-            endcity: '四川',
-            starttime: '4:33',
-            endtime: '20:26',
-            price: '638',
-            company: '北方航空',
-            ID: 'NU3112'
-          }
+          // {
+          //   startcity: '上海1',
+          //   endcity: '北京',
+          //   starttime: '19:45',
+          //   endtime: '21:30',
+          //   price: '443',
+          //   company: '南方航空',
+          //   ID: 'MU3366'
+          // },
         ],
         activities: [{
           content: '虹桥机场',
@@ -342,6 +271,9 @@
       onSubmit() {
         if (this.sortForm.date && this.sortForm.endcity && this.sortForm.startcity) {
           if (!this.show3) {
+            searchticket(this.sortForm).then(response => {
+              this.ticketList = response
+            })
             this.show3 = !this.show3
             this.first = false
             this.freshtotal()
