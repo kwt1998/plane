@@ -12,7 +12,7 @@ export function login(data) {
   })
 }
 
-// 获取信息
+// 获取用户信息
 export function getInfo(token) {
   // console.log(token)
   return request({
@@ -21,6 +21,17 @@ export function getInfo(token) {
     params: qs.stringify(token)
   })
 }
+
+// 获取公司信息
+export function getcompanyInfo(token) {
+  // console.log(token)
+  return request({
+    url: '/',
+    method: 'post',
+    params: qs.stringify(token)
+  })
+}
+
 
 // 查找机票（公司）
 export function searchticket(data) {
