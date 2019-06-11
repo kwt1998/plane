@@ -33,11 +33,13 @@
         </el-select>
         <span style="font-weight: 900; color: #606266; margin-left: 10px">日期</span>
         <el-date-picker
+          value-format="yyyy-MM-dd"
           v-model="sortForm.date"
           :picker-options="pickerOptions"
           align="right"
           placeholder="选择日期"
           type="date"
+          @change="formatTime"
         />
         <el-tooltip effect="dark" content="可进行组合查询" placement="right-start">
           <el-button style="width: 80px;" type="primary" @click="onSubmit">查询</el-button>
@@ -146,9 +148,9 @@
           seat1price: '',
           seat1number: '',
           seat2price: '',
-          seat1number: '',
-          seat2price: '',
-          seat1number: ''
+          seat2number: '',
+          seat3price: '',
+          seat3number: ''
         },
         options: [{
           label: '热门城市',
@@ -175,62 +177,16 @@
             label: '大连'
           }]
         }],
-        tableData: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }]
+        tableData: [ ]
       }
     },
     methods: {
+      formatTime(time){
+        this.sortForm = time
+      },
       onSubmit() {
         if (this.sortForm.date || this.sortForm.endcity || this.sortForm.startcity) {
-          companysearch(this.tableData).then(response => {
+          companysearch(this.sortData).then(response => {
             this.ticketList = response
           })
         } else {
