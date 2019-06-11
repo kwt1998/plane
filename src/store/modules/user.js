@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo, getid } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import constantRoutes from '@/router/index'
@@ -106,9 +106,13 @@ const actions = {
         commit('SET_TYPE', response[0])
         sessionStorage.setItem('type', state.type)
         commit('SET_TOKEN', id)
-        sessionStorage.setItem('id', state.id)
+        sessionStorage.setItem('id', state.token)
         setToken(id)
-        getInfo(sessionStorage.getItem('id')
+        getid(1)
+          .then(function(response) {
+
+          })
+        getInfo(sessionStorage.getItem('id'))
           .then(function(response) {
             console.log(response)
             commit('SET_NAME', response.name)
@@ -125,7 +129,7 @@ const actions = {
           })
           .catch(function(error) {
             console.log(error)
-          }))
+          })
         dispatch('setroutes')
         resolve()
       }).catch(error => {
