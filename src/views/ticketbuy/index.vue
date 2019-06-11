@@ -218,25 +218,25 @@
         options: [{
           label: '热门城市',
           options: [{
-            value: 'Shanghai',
+            value: '上海',
             label: '上海'
           }, {
-            value: 'Beijing',
+            value: '北京',
             label: '北京'
           }]
         }, {
           label: '城市名',
           options: [{
-            value: 'Chengdu',
+            value: '成都',
             label: '成都'
           }, {
-            value: 'Shenzhen',
+            value: '深圳',
             label: '深圳'
           }, {
-            value: 'Guangzhou',
+            value: '广州',
             label: '广州'
           }, {
-            value: 'Dalian',
+            value: '大连',
             label: '大连'
           }]
         }],
