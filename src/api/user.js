@@ -38,7 +38,7 @@ export function searchticket(data) {
 }
 export function companysearch(data) {
   return request({
-    url: '/search',
+    url: '/companysearch',
     method: 'post',
     data: qs.stringify(data)
   })
