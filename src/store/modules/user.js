@@ -101,7 +101,8 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       getInfo(1)
-        .then(response => {})
+        .then(response => {
+        })
       login({ username: username.trim(), password: password }).then(response => {
         // console.log(response)
         const id = response[1]
@@ -110,7 +111,7 @@ const actions = {
         commit('SET_TOKEN', id)
         sessionStorage.setItem('id', state.token)
         setToken(id)
-        getInfo(sessionStorage.getItem('id'))
+        getInfo({ data: sessionStorage.getItem('id') })
           .then(response => {
             console.log(response)
             commit('SET_NAME', response.name)
