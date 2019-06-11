@@ -182,7 +182,7 @@
     },
     methods: {
       formatTime(time){
-        this.sortForm = time
+        this.sortForm.date = time
       },
       onSubmit() {
         if (this.sortForm.date || this.sortForm.endcity || this.sortForm.startcity) {
