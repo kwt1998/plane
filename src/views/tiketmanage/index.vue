@@ -102,25 +102,28 @@
         :before-close="handleClose">
         <span slot="title">添加航班</span>
         <h4>请输入航班号</h4>
-        <el-input v-model="originPass" type="password"/>
+        <el-input v-model="addForm.source" type="password"/>
         <h4>请输入起点</h4>
-        <el-input v-model="changePass" type="password"/>
+        <el-input v-model="addForm.destination" type="password"/>
         <h4>请输入终点</h4>
-        <el-input v-model="changePass2" type="password"/>
+        <el-input v-model="addForm.departuretime" type="password"/>
         <h4>请输入起飞时间</h4>
-        <el-input v-model="changePass2" type="password"/>
+        <el-input v-model="addForm.landingtime" type="password"/>
         <h4>请输入降落时间</h4>
-        <el-input v-model="changePass2" type="password"/>
+        <el-input v-model="addForm.changePass2" type="password"/>
         <h4>请输入票价</h4>
         经济舱：
-        <el-input v-model="changePass2" type="password"/>
+        <el-input v-model="addForm.seat1price" type="password"/>
+        张数：<el-input v-model="seat1number" type="password"/>
         普通舱：
-        <el-input v-model="changePass2" type="password"/>
+        <el-input v-model="addForm.seat3price" type="password"/>
+        张数：<el-input v-model="seat2number" type="password"/>
         头等舱：
-        <el-input v-model="changePass2" type="password"/>
+        <el-input v-model="addForm.seat3price" type="password"/>
+        张数：<el-input v-model="seat3number" type="password"/>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button @click="sendPass">确 定</el-button>
+          <el-button @click="sendticket">确 定</el-button>
         </span>
       </el-dialog>
     </div>
@@ -128,11 +131,12 @@
 </template>
 
 <script>
-  import { companysearch,deleteticket } from '../../api/user'
+  import { companysearch, deleteticket, addplane  } from '../../api/user'
 
   export default {
     data() {
       return {
+        dialogVisible: false,
         sortForm: {
           companyid: '1',
           date: '',
@@ -140,6 +144,7 @@
           endcity: ''
         },
         addForm: {
+          companyid: this.sessionStorage.getItem('token'),
           source: '',
           destination: '',
           departuretime: '',
@@ -177,7 +182,7 @@
             label: '大连'
           }]
         }],
-        tableData: [ ]
+        tableData: []
       }
     },
     methods: {
@@ -214,7 +219,26 @@
         })
       },
       addticket() {
-
+         this.dialogVisible = true
+      },
+      sendticket() {
+        this.$confirm('添加航班', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          addplane(this.addForm).then(response => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
       }
     }
   }

@@ -37,6 +37,7 @@ export function searchticket(data) {
   })
 }
 export function companysearch(data) {
+  console.log(data)
   return request({
     url: '/companysearch',
     method: 'post',
@@ -51,11 +52,11 @@ export function deleteticket(id) {
     params: qs.stringify(id)
   })
 }
-export function addticket(id) {
+export function addplane(data) {
   return request({
     url: '/addflight',
     method: 'post',
-    params: qs.stringify(id)
+    data: qs.stringify(data)
   })
 }
 // 获取订单（顾客）
