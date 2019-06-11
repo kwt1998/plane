@@ -6,18 +6,17 @@ export function login(data) {
   return request({
     url: '/UserLogin',
     method: 'post',
-    // name: qs.stringify(data.username),
-    // password: qs.stringify(data.password)
     data: qs.stringify(data)
   })
 }
 
 // 获取用户信息
 export function getInfo(token) {
+  console.log('token：'+ token)
   return request({
     url: '/UserById',
     method: 'post',
-    params: qs.stringify(token)
+    data: qs.stringify(token)
   })
 }
 // 获取公司信息
