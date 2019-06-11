@@ -32,8 +32,7 @@ export function getcompanyInfo(token) {
   })
 }
 
-
-// 查找机票（公司）
+// 查找机票（用户）
 export function searchticket(data) {
   return request({
     url: '/search',
