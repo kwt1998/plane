@@ -100,6 +100,8 @@ const actions = {
   login: function({ dispatch, commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
+      getInfo(1)
+        .then(response => {})
       login({ username: username.trim(), password: password }).then(response => {
         // console.log(response)
         const id = response[1]
