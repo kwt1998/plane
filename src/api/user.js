@@ -3,7 +3,6 @@ import qs from 'qs'
 
 // 登陆
 export function login(data) {
-  console.log(data)
   return request({
     url: '/UserLogin',
     method: 'post',
@@ -15,19 +14,16 @@ export function login(data) {
 
 // 获取用户信息
 export function getInfo(token) {
-  console.log('toooooooken' + token)
   return request({
     url: '/UserById',
     method: 'post',
     params: qs.stringify(token)
   })
 }
-
 // 获取公司信息
 export function getcompanyInfo(token) {
-  // console.log(token)
   return request({
-    url: '/',
+    url: '/CompanyById',
     method: 'post',
     params: qs.stringify(token)
   })
@@ -41,16 +37,28 @@ export function searchticket(data) {
     data: qs.stringify(data)
   })
 }
-
-// 删除机票（公司）
-export function deleteticket(id) {
+export function companysearch(data) {
   return request({
     url: '/search',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+// 删除航班（公司）
+export function deleteticket(id) {
+  return request({
+    url: '/deleteflight',
     method: 'post',
     params: qs.stringify(id)
   })
 }
-
+export function addticket(id) {
+  return request({
+    url: '/addflight',
+    method: 'post',
+    params: qs.stringify(id)
+  })
+}
 // 获取订单（顾客）
 export function getform(id) {
   return request({
@@ -90,7 +98,7 @@ export function getcircle(id) {
 // 登出
 export function logout() {
   return request({
-    url: '/user/logout',
+    url: '/',
     method: 'post'
   })
 }
@@ -98,7 +106,7 @@ export function logout() {
 // 注册
 export function sign(data) {
   return request({
-    url: '/user/logout',
+    url: '/',
     method: 'post',
     data: qs.stringify(data)
   })

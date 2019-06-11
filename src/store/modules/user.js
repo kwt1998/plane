@@ -1,4 +1,4 @@
-import { login, logout, getInfo, getid } from '@/api/user'
+import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import constantRoutes from '@/router/index'
@@ -97,7 +97,7 @@ const actions = {
     })
   },
   // user login
-  login({ dispatch, commit }, userInfo) {
+  login: function({ dispatch, commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
@@ -108,12 +108,8 @@ const actions = {
         commit('SET_TOKEN', id)
         sessionStorage.setItem('id', state.token)
         setToken(id)
-        getid(1)
-          .then(function(response) {
-
-          })
         getInfo(sessionStorage.getItem('id'))
-          .then(function(response) {
+          .then(response => {
             console.log(response)
             commit('SET_NAME', response.name)
             commit('SET_AVATAR', response.avatar)
@@ -127,9 +123,6 @@ const actions = {
             sessionStorage.setItem('sex', state.sex)
             sessionStorage.setItem('age', state.age)
           })
-          .catch(function(error) {
-            console.log(error)
-          })
         dispatch('setroutes')
         resolve()
       }).catch(error => {
@@ -139,15 +132,15 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo('1').then(response => {
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
+  // getInfo({ commit, state }) {
+  //   return new Promise((resolve, reject) => {
+  //     getInfo('1').then(response => {
+  //       resolve()
+  //     }).catch(error => {
+  //       reject(error)
+  //     })
+  //   })
+  // },
 
   // user logout
   logout({ commit, state }) {
