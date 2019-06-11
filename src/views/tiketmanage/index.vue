@@ -39,7 +39,7 @@
           placeholder="选择日期"
           type="date"
         />
-        <el-tooltip  effect="dark" content="可进行组合查询" placement="right-start">
+        <el-tooltip effect="dark" content="可进行组合查询" placement="right-start">
           <el-button style="width: 80px;" type="primary" @click="onSubmit">查询</el-button>
         </el-tooltip>
         <!--<el-button style="width: 150px;margin-top: 10px" type="primary" @click="onSubmit">查询 (可组合)</el-button>-->
@@ -91,19 +91,55 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-button @click="addticket()">
+        添加新航班
+      </el-button>
+      <el-dialog
+        :visible.sync="dialogVisible"
+        width="400px"
+        :before-close="handleClose">
+        <span slot="title">添加航班</span>
+        <h4>请输入航班号</h4>
+        <el-input v-model="originPass" type="password"/>
+        <h4>请输入起点</h4>
+        <el-input v-model="changePass" type="password"/>
+        <h4>请输入终点</h4>
+        <el-input v-model="changePass2" type="password"/>
+        <h4>请输入起飞时间</h4>
+        <el-input v-model="changePass2" type="password"/>
+        <h4>请输入降落时间</h4>
+        <el-input v-model="changePass2" type="password"/>
+        <h4>请输入票价</h4>
+        经济舱：
+        <el-input v-model="changePass2" type="password"/>
+        普通舱：
+        <el-input v-model="changePass2" type="password"/>
+        头等舱：
+        <el-input v-model="changePass2" type="password"/>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button @click="sendPass">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
   import { deleteticket } from '../../api/user'
+
   export default {
     data() {
       return {
         sortForm: {
+          companyid: '',
           date: '',
           startcity: '',
           endcity: ''
+        },
+        addForm: {
+          source: '',
+          destination: ''
         },
         options: [{
           label: '热门城市',
@@ -211,6 +247,9 @@
             message: '已取消删除'
           })
         })
+      },
+      addticket() {
+
       }
     }
   }

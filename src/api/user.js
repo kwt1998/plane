@@ -12,7 +12,7 @@ export function login(data) {
 
 // 获取用户信息
 export function getInfo(token) {
-  console.log('token：'+ token)
+  console.log('token：' + token)
   return request({
     url: '/UserById',
     method: 'post',
@@ -33,7 +33,7 @@ export function searchticket(data) {
   return request({
     url: '/search',
     method: 'post',
-    data: qs.stringify(data)
+    data: qs.stringify({token: 1})
   })
 }
 export function companysearch(data) {
