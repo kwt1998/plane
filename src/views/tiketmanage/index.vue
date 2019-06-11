@@ -126,20 +126,29 @@
 </template>
 
 <script>
-  import { deleteticket } from '../../api/user'
+  import { companysearch,deleteticket } from '../../api/user'
 
   export default {
     data() {
       return {
         sortForm: {
-          companyid: '',
+          companyid: '1',
           date: '',
           startcity: '',
           endcity: ''
         },
         addForm: {
           source: '',
-          destination: ''
+          destination: '',
+          departuretime: '',
+          daparturedata: '',
+          landingtime: '',
+          seat1price: '',
+          seat1number: '',
+          seat2price: '',
+          seat1number: '',
+          seat2price: '',
+          seat1number: ''
         },
         options: [{
           label: '热门城市',
@@ -221,7 +230,7 @@
     methods: {
       onSubmit() {
         if (this.sortForm.date || this.sortForm.endcity || this.sortForm.startcity) {
-          searchticket(this.tableData).then(response => {
+          companysearch(this.tableData).then(response => {
             this.ticketList = response
           })
         } else {
