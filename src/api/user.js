@@ -11,13 +11,7 @@ export function login(data) {
     data: qs.stringify(data)
   })
 }
-export function getid(token) {
-  return request({
-    url: '/getUseridByname',
-    method: 'post',
-    params: qs.stringify(token)
-  })
-}
+
 // 获取用户信息
 export function getInfo(token) {
   return request({
@@ -26,18 +20,10 @@ export function getInfo(token) {
     params: qs.stringify(token)
   })
 }
+// 获取公司信息
 export function getcompanyInfo(token) {
   return request({
     url: '/CompanyById',
-    method: 'post',
-    params: qs.stringify(token)
-  })
-}
-// 获取公司信息
-export function getcompanyInfo(token) {
-  // console.log(token)
-  return request({
-    url: '/',
     method: 'post',
     params: qs.stringify(token)
   })
