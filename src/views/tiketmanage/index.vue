@@ -196,6 +196,7 @@
         if (this.sortForm.date || this.sortForm.endcity || this.sortForm.startcity) {
           companysearch(this.sortForm).then(response => {
             this.tableData = response
+            console.log(this.tableData)
           })
         } else {
           this.$message.error('请至少输入一项查询信息')
