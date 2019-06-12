@@ -16,9 +16,10 @@ export function getInfo(token) {
   return request({
     url: '/UserById',
     method: 'post',
-    data: qs.stringify(token)
+    data: qs.stringify({ token: token })
   })
 }
+
 // 获取公司信息
 export function getcompanyInfo(token) {
   return request({
@@ -33,9 +34,10 @@ export function searchticket(data) {
   return request({
     url: '/search',
     method: 'post',
-    data: qs.stringify({token: 1})
+    data: qs.stringify({ token: 1 })
   })
 }
+
 export function companysearch(data) {
   console.log(data)
   return request({
@@ -44,6 +46,7 @@ export function companysearch(data) {
     data: qs.stringify(data)
   })
 }
+
 // 删除航班（公司）
 export function deleteticket(id) {
   return request({
@@ -52,6 +55,7 @@ export function deleteticket(id) {
     params: qs.stringify(id)
   })
 }
+
 export function addplane(data) {
   return request({
     url: '/addflight',
@@ -59,6 +63,7 @@ export function addplane(data) {
     data: qs.stringify(data)
   })
 }
+
 // 获取订单（顾客）
 export function getform(id) {
   return request({
