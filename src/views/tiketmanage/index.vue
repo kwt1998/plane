@@ -54,20 +54,20 @@
         style="width: 808px; margin-right: auto;margin-left: auto; "
         height="500px">
         <el-table-column
-          prop=""
+          fixed
+          prop="flightid"
           label="航班号"
           width="120">
         </el-table-column>
         <el-table-column
-          fixed
-          prop="departuredata"
+          prop="departuretime"
           label="出发时间"
-          width="150">
+          width="160">
         </el-table-column>
         <el-table-column
-          prop=""
+          prop="landingtime"
           label="到达时间"
-          width="120">
+          width="160">
         </el-table-column>
         <el-table-column
           prop="source"
@@ -165,25 +165,25 @@
         options: [{
           label: '热门城市',
           options: [{
-            value: 'Shanghai',
+            value: '上海',
             label: '上海'
           }, {
-            value: 'Beijing',
+            value: '北京',
             label: '北京'
           }]
         }, {
           label: '城市名',
           options: [{
-            value: 'Chengdu',
+            value: '成都',
             label: '成都'
           }, {
-            value: 'Shenzhen',
+            value: '深圳',
             label: '深圳'
           }, {
-            value: 'Guangzhou',
+            value: '广州',
             label: '广州'
           }, {
-            value: 'Dalian',
+            value: '大连',
             label: '大连'
           }]
         }],
@@ -196,7 +196,8 @@
         if (this.sortForm.date || this.sortForm.endcity || this.sortForm.startcity) {
           companysearch(this.sortForm).then(response => {
             this.tableData = response
-            console.log(this.tableData)
+            console.log('ssss'+this.tableData)
+            console.log('data'+this.tableData[0].landingtime)
           })
         } else {
           this.$message.error('请至少输入一项查询信息')

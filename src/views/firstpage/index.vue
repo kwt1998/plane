@@ -33,7 +33,15 @@
         circledata2: []
       }
     },
-    mounted() {
+    beforeCreate(){
+
+      getcircle(this.sessionStorage.getItem('token')).then(response => {
+        this.circledata1 = response[0]
+        this.circledata2 = response[1]
+        console.log(this.circledata1)
+      })
+    },
+  mounted() {
       const myDate = new Date()
       this.year = myDate.getFullYear()
       this.month = myDate.getMonth()
@@ -41,14 +49,10 @@
       this.drawCircle()
     },
     methods: {
-      drawLine() {
-        // 基于准备好的dom，初始化echarts实例
+  drawLine() {
+    // 基于准备好的dom，初始化echarts实例
         const myChart = this.$echarts.init(document.getElementById('myChart'))
-        getline().then(response => {
-          this.data1 = response[0]
-          this.data2 = response[1]
-        })
-        // 绘制图表
+    // 绘制图表
         myChart.setOption({
           tooltip: {
             trigger: 'axis',
@@ -108,8 +112,8 @@
             {
               name: '销售票数',
               type: 'bar',
-              // data: [1000, 1234, 1598, 1987, 2444, 2114, 1456, 1622, 1241, 987, 1664, 2241],
-              data: this.data1,
+              data: [1000, 1234, 1598, 1987, 2444, 2114, 1456, 1622, 1241, 987, 1664, 2241],
+              // data: this.data1,
               itemStyle: {
                 normal: {
                   color: '#5dacf6'
@@ -123,19 +127,25 @@
               name: '销售额',
               type: 'line',
               yAxisIndex: 1,
-              // data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
-              data: this.data2
+              data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+              // data: this.data2
             }
           ]
         })
-      },
-      drawCircle() {
+  },
+  drawCircle() {
+    var circledata1
+    var circledata2
+    getcircle('1').then(response => {
+      console.log('get')
+      circledata1 = response[0]
+      circledata2 = response[1]
+      console.log('data1'+circledata1)
+      console.log(circledata2)
+    })
+
         const myChart2 = this.$echarts.init(document.getElementById('myChart2'))
-        getcircle().then(response => {
-          this.circledata1 = response[0]
-          this.circledata2 = response[1]
-        })
-        // 绘制图表
+    // 绘制图表
         myChart2.setOption({
           tooltip: {
             trigger: 'item',
@@ -164,9 +174,9 @@
                 }
               },
               data: [
-                { value: this.circledata1[0], name: '经济舱', selected: true },
-                { value: this.circledata1[1], name: '普通舱' },
-                { value: this.circledata1[2], name: '头等舱' }
+                { value: 12132, name: '经济舱', selected: true },
+                { value: 9872, name: '普通舱' },
+                { value: 2234, name: '头等舱' }
               ]
             },
             {
@@ -218,14 +228,14 @@
                 }
               },
               data: [
-                { value: this.circledata2[0], name: '经济舱' },
-                { value: this.circledata2[1], name: '普通舱' },
-                { value: this.circledata2[2], name: '头等舱' }
+                { value: 23.1, name: '经济舱' },
+                { value: 31.4, name: '普通舱' },
+                { value: 23.2, name: '头等舱' }
               ]
             }
           ]
         })
-      }
+  }
     }
   }
 </script>

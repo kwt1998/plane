@@ -8,7 +8,7 @@
           <el-divider></el-divider>
           <el-form ref="form" label-width="120px">
             <el-form-item label="地点">
-              <el-select v-model="sortForm.startcity" placeholder="出发">
+              <el-select v-model="sortForm.source" placeholder="出发">
                 <el-option-group
                   v-for="group in options"
                   :key="group.label"
@@ -23,7 +23,7 @@
                 </el-option-group>
               </el-select>
               -
-              <el-select v-model="sortForm.endcity" placeholder="到达">
+              <el-select v-model="sortForm.destination" placeholder="到达">
                 <el-option-group
                   v-for="group in options"
                   :key="group.label"
@@ -41,7 +41,8 @@
             <el-form-item label="日期">
               <el-col :span="11">
                 <el-date-picker
-                  v-model="sortForm.date"
+                  value-format="yyyy-MM-dd"
+                  v-model="sortForm.departuredate"
                   :picker-options="pickerOptions"
                   align="right"
                   placeholder="选择日期"
@@ -85,17 +86,17 @@
           >
             <div slot="header">
               <h4 style="margin: 0px;color: #409EFF">
-                {{ ticket.startcity }}
+                {{ ticket.source }}
                 <svg-icon icon-class="danxiangjiantou"/>
-                {{ ticket.endcity }}
+                {{ ticket.destination }}
                 <span style="float: right"><svg-icon icon-class="renminbi"/>
-                  <span style="color: #f30300">{{ ticket.price }}</span></span>
+                  <span style="color: #f30300">443</span></span>
               </h4>
             </div>
             <h3 v-if="check" style="margin: 0px">
-              {{ ticket.starttime }}
+              {{ ticket.departuretime }}
               <svg-icon icon-class="jipiaodancheng" style="width: 50px"/>
-              {{ ticket.endtime }}
+              {{ ticket.landingtime }}
               <span v-if="check" style="float: right">
                 <svg-icon icon-class="yuding"/>
                 <el-button type="text" @click="reserve(index)">预定</el-button>
@@ -110,7 +111,7 @@
                 {{ activity.content }}
               </el-timeline-item>
             </el-timeline>
-            <p style="font-size: 10px; margin-top: 20px">{{ ticket.company }}{{ ticket.ID }}</p>
+            <p style="font-size: 10px; margin-top: 20px">{{ ticket.company.companyname }}{{ ticket.flightid }}</p>
           </el-card>
         </div>
       </el-collapse-transition>
@@ -169,7 +170,7 @@
           </span>
           <h5 style="margin-top: 30px">总金额：
             <svg-icon icon-class="renminbi"/>
-            <span style="color: red">{{total}}</span></h5>
+            <span style="color: red">443</span></h5>
           <div style="margin-top: 40px">
             <h5>选择支付方式</h5>
             <el-radio-group v-model="pay">
@@ -211,32 +212,32 @@
           page_total: 10
         },
         sortForm: {
-          date: '',
-          startcity: '',
-          endcity: ''
+          departuredate: '',
+          source: '',
+          destination: ''
         },
         options: [{
           label: '热门城市',
           options: [{
-            value: 'Shanghai',
+            value: '上海',
             label: '上海'
           }, {
-            value: 'Beijing',
+            value: '北京',
             label: '北京'
           }]
         }, {
           label: '城市名',
           options: [{
-            value: 'Chengdu',
+            value: '成都',
             label: '成都'
           }, {
-            value: 'Shenzhen',
+            value: '深圳',
             label: '深圳'
           }, {
-            value: 'Guangzhou',
+            value: '广州',
             label: '广州'
           }, {
-            value: 'Dalian',
+            value: '大连',
             label: '大连'
           }]
         }],
@@ -255,11 +256,11 @@
           content: '虹桥机场',
           timestamp: '2018-04-13  10:25'
         }, {
-          content: '昌北机场',
+          content: '北京机场',
           timestamp: '2018-04-11 12:00'
         }],
         passengers: [
-          { name: '李自强', number: '360481192839283' }
+          { name: 'harry', number: '360481192839283' }
         ],
         newpassenger: { name: '', number: '' }
       }
@@ -269,14 +270,13 @@
         this.total = this.passengers.length * this.ticketList[this.number].price
       },
       onSubmit() {
-        if (this.sortForm.date && this.sortForm.endcity && this.sortForm.startcity) {
+        if (this.sortForm.departuredate && this.sortForm.destination && this.sortForm.source) {
           if (!this.show3) {
             searchticket(this.sortForm).then(response => {
               this.ticketList = response
             })
             this.show3 = !this.show3
             this.first = false
-            this.freshtotal()
           }
         } else {
           this.$message.error('请输入完整信息')
@@ -295,6 +295,7 @@
       },
       submit() {
         if (this.pay){
+
         }
         else{
           this.$message({
