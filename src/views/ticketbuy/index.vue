@@ -218,25 +218,25 @@
         options: [{
           label: '热门城市',
           options: [{
-            value: '上海',
+            value: 'Shanghai',
             label: '上海'
           }, {
-            value: '北京',
+            value: 'Beijing',
             label: '北京'
           }]
         }, {
           label: '城市名',
           options: [{
-            value: '成都',
+            value: 'Chengdu',
             label: '成都'
           }, {
-            value: '深圳',
+            value: 'Shenzhen',
             label: '深圳'
           }, {
-            value: '广州',
+            value: 'Guangzhou',
             label: '广州'
           }, {
-            value: '大连',
+            value: 'Dalian',
             label: '大连'
           }]
         }],
@@ -294,7 +294,7 @@
         freshtotal()
       },
       submit() {
-        if (this.pay) {
+        if (this.pay){
         }
         else{
           this.$message({
