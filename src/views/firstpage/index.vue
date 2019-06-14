@@ -1,7 +1,7 @@
 <template>
   <div class="firstpage-container">
     <el-card style="background-color: #303133; border-radius: 10px; text-align: center;">
-      <p class="name">Welcome {{name}}</p>
+      <p class="name">Welcome 东华航空公司</p>
     </el-card>
     <el-tag style="margin-top: 40px; width: 100%" type="info">{{year-1}}-{{year}}年销售状况</el-tag>
     <div style="margin-top: 20px; margin-left: 20px; margin-right: 50px">
@@ -134,15 +134,15 @@
         })
   },
   drawCircle() {
-    var circledata1
-    var circledata2
-    getcircle('1').then(response => {
-      console.log('get')
-      circledata1 = response[0]
-      circledata2 = response[1]
-      console.log('data1'+circledata1)
-      console.log(circledata2)
-    })
+    // var circledata1
+    // var circledata2
+    // getcircle('1').then(response => {
+    //   console.log('get')
+    //   circledata1 = response[0]
+    //   circledata2 = response[1]
+    //   console.log('data1'+circledata1)
+    //   console.log(circledata2)
+    // })
 
         const myChart2 = this.$echarts.init(document.getElementById('myChart2'))
     // 绘制图表

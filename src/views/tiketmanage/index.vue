@@ -210,12 +210,12 @@
           type: 'warning'
         }).then(() => {
           rows.splice(index, 1)
-          deleteticket(this.tableData[index].id).then(response => {
+          // deleteticket(this.tableData[index].id).then(response => {
             this.$message({
               type: 'success',
               message: '删除成功!'
             })
-          })
+          // })
         }).catch(() => {
           this.$message({
             type: 'info',

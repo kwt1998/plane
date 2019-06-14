@@ -19,28 +19,28 @@ export const constantRoutes = [
     hidden: true
   },
 
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/firstpage',
-    children: [{
-      path: 'firstpage',
-      name: 'Firstpage',
-      component: () => import('@/views/firstpage/index'),
-      meta: { title: '首页', icon: 'dashboard' }
-    }]
-  },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/tiketmanage',
-    children: [{
-      path: 'tiketmanage',
-      name: 'Tiketmanage',
-      component: () => import('@/views/tiketmanage/index'),
-      meta: { title: '票务管理', icon: 'dashboard' }
-    }]
-  },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   redirect: '/firstpage',
+  //   children: [{
+  //     path: 'firstpage',
+  //     name: 'Firstpage',
+  //     component: () => import('@/views/firstpage/index'),
+  //     meta: { title: '首页', icon: 'dashboard' }
+  //   }]
+  // },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   redirect: '/tiketmanage',
+  //   children: [{
+  //     path: 'tiketmanage',
+  //     name: 'Tiketmanage',
+  //     component: () => import('@/views/tiketmanage/index'),
+  //     meta: { title: '票务管理', icon: 'dashboard' }
+  //   }]
+  // },
   // {
   //   path: '/',
   //   component: Layout,

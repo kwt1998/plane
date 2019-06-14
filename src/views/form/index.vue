@@ -50,9 +50,9 @@
   import { getform, deleteform } from '../../api/user'
   export default {
     mounted() {
-      getform (sessionStorage.getItem('id')).then(response => {
-        this.ticketList = response
-      })
+      // getform (sessionStorage.getItem('id')).then(response => {
+      //   this.ticketList = response
+      // })
     },
     computed: {
       ...mapGetters([
@@ -71,7 +71,7 @@
             company: '南方航空',
             ID: 'MU3366',
             buytime: '04月07日 19：53',
-            buyusers: [{ name: '李大状' }, { name: '王小强' }]
+            buyusers: [{ name: 'harry' }]
           }
         ]
       }
@@ -83,13 +83,13 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteform().then(response => {
+          // deleteform().then(response => {
             this.ticketList.splice(index, 1)
             this.$message({
               type: 'success',
               message: '删除成功!'
             })
-          })
+          // })
         }).catch(() => {
           this.$message({
             type: 'info',

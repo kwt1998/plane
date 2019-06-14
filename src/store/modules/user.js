@@ -52,42 +52,121 @@ const actions = {
       commit('SET_AGE', sessionStorage.getItem('age'))
       commit('SET_MAIL', sessionStorage.getItem('mail'))
       commit('SET_PHONE', sessionStorage.getItem('phone'))
-      if (sessionStorage.getItem('type') === '1') {
+      if (sessionStorage.getItem('type') === '2') {
+
         console.log('3')
-        const a = [{
-          path: '/',
-          component: Layout,
-          name: 'HomePage',
-          children: [{
-            path: 'homepage',
-            name: 'HomePage',
-            component: () => import('@/views/homepage/index'),
-            meta: { title: '个人主页', icon: 'user' }
-          }]
-        },
+        const a =[
           {
             path: '/',
             component: Layout,
-            name: 'Ticketbuy',
+            redirect: '/firstpage',
             children: [{
-              path: 'ticketbuy',
-              name: 'Ticketbuy',
-              component: () => import('@/views/ticketbuy/index'),
-              meta: { title: '开始购票', icon: 'table' }
+              path: 'firstpage',
+              name: 'Firstpage',
+              component: () => import('@/views/firstpage/index'),
+              meta: { title: '首页', icon: 'dashboard' }
             }]
           },
           {
             path: '/',
             component: Layout,
-            children: [
-              {
-                path: 'form',
-                name: 'Form',
-                component: () => import('@/views/form/index'),
-                meta: { title: '查看订单', icon: 'form' }
-              }
-            ]
-          }]
+            redirect: '/tiketmanage',
+            children: [{
+              path: 'tiketmanage',
+              name: 'Tiketmanage',
+              component: () => import('@/views/tiketmanage/index'),
+              meta: {title: '票务管理', icon: 'dashboard'}
+            }]
+          }
+
+        // {
+        //   path: '/',
+        //   component: Layout,
+        //   name: 'HomePage',
+        //   children: [{
+        //     path: 'homepage',
+        //     name: 'HomePage',
+        //     component: () => import('@/views/homepage/index'),
+        //     meta: { title: '个人主页', icon: 'user' }
+        //   }]
+        // },
+        //   {
+        //     path: '/',
+        //     component: Layout,
+        //     name: 'Ticketbuy',
+        //     children: [{
+        //       path: 'ticketbuy',
+        //       name: 'Ticketbuy',
+        //       component: () => import('@/views/ticketbuy/index'),
+        //       meta: { title: '开始购票', icon: 'table' }
+        //     }]
+        //   },
+        //   {
+        //     path: '/',
+        //     component: Layout,
+        //     children: [
+        //       {
+        //         path: 'form',
+        //         name: 'Form',
+        //         component: () => import('@/views/form/index'),
+        //         meta: { title: '查看订单', icon: 'form' }
+        //       }
+        //     ]
+        //   }
+          ]
+        constantRoutes.addRoutes(a)
+        for (var i = 0; i < a.length; i++) {
+          constantRoutes.options.routes.push(a[i])
+        }
+      }
+      else {
+        const a = [
+          {
+            path: '/',
+            component: Layout,
+            redirect: '/firstpage2',
+            children: [{
+              path: 'firstpage2',
+              name: 'Firstpage2',
+              component: () => import('@/views/firstpage2/index'),
+              meta: { title: '首页', icon: 'dashboard' }
+            }]
+          },
+          {
+            path: '/',
+            component: Layout,
+            name: 'HomePage',
+            children: [{
+              path: 'homepage',
+              name: 'HomePage',
+              component: () => import('@/views/homepage/index'),
+              meta: { title: '个人主页', icon: 'user' }
+            }]
+          },
+            {
+              path: '/',
+              component: Layout,
+              name: 'Ticketbuy',
+              children: [{
+                path: 'ticketbuy',
+                name: 'Ticketbuy',
+                component: () => import('@/views/ticketbuy/index'),
+                meta: { title: '开始购票', icon: 'table' }
+              }]
+            },
+            {
+              path: '/',
+              component: Layout,
+              children: [
+                {
+                  path: 'form',
+                  name: 'Form',
+                  component: () => import('@/views/form/index'),
+                  meta: { title: '查看订单', icon: 'form' }
+                }
+              ]
+            }
+        ]
         constantRoutes.addRoutes(a)
         for (var i = 0; i < a.length; i++) {
           constantRoutes.options.routes.push(a[i])
