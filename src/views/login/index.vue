@@ -59,7 +59,7 @@
       <el-form label-position="left" status-icon ref="signForm" :rules="signRules" :model="signUser">
         <h4>用户名：</h4>
         <el-form-item prop="name">
-          <el-input v-model="signUser.name" placeholder="请输入内容" clearable></el-input>
+          <el-input v-model="signUser.username" placeholder="请输入内容" clearable></el-input>
         </el-form-item>
         <h4>密码：</h4>
         <el-form-item prop="code">
@@ -76,6 +76,14 @@
         <h4>电话</h4>
         <el-form-item >
           <el-input v-model="signUser.phone" placeholder="请输入内容" ></el-input>
+        </el-form-item>
+        <h4>性别</h4>
+        <el-form-item >
+          <el-input v-model="signUser.sex" placeholder="请输入内容" ></el-input>
+        </el-form-item>
+        <h4>真实姓名</h4>
+        <el-form-item >
+          <el-input v-model="signUser.name" placeholder="请输入内容" ></el-input>
         </el-form-item>
         <h4>年龄</h4>
         <el-form-item >
@@ -144,6 +152,7 @@
           password: [{ required: true, trigger: 'blur', validator: validatePassword }]
         },
         signUser: {
+          username: '',
           name: '',
           code: '',
           code2: '',
@@ -153,7 +162,7 @@
           sex: ''
         },
         signRules: {
-          name: [
+          username: [
             { required: true, message: '请输入用户名', trigger: 'blur' },
             { min: 3, max: 5, message: '长度在 3 到 15 个字符', trigger: 'blur' }
           ],
@@ -173,7 +182,7 @@
     watch: {
       $route: {
         handler: function(route) {
-          this.redirect = route.query && route.query.redirect
+          // this.redirect = route.query && route.query.redirect
         }
         ,
         immediate: true
@@ -208,7 +217,6 @@
         })
       },
       handleSign() {
-
         this.ifSign = true
       },
       onSubmit(formName) {

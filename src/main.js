@@ -38,10 +38,10 @@ new Vue({
   store,
   render: h => h(App),
   created() {
-    if (sessionStorage.getItem('name')) {
+
       this.$store.dispatch('user/setroutes').then(() => {
       }).catch(() => {
       })
-    }
+
   }
 })

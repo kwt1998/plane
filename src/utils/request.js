@@ -47,14 +47,14 @@ service.interceptors.response.use(
     console.log(response.data)
 
     // if the custom code is not 20000, it is judged as an error.
-    if (res <= 0) {
-      if (res === 0) {
+    if (res[1] <= 0) {
+      if (res[1] === 0) {
         Message({
           message: '用户名不存在！',
           type: 'error',
           duration: 5 * 1000
         })
-      } else if (res === -1) {
+      } else if (res[1] === -1) {
         Message({
           message: '密码错误！！',
           type: 'error',

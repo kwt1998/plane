@@ -111,10 +111,19 @@ export function logout() {
 
 // 注册
 export function sign(data) {
-  console.log('sign'+data)
+  console.log('sign'+qs.stringify(data))
   return request({
     url: '/UserRegister',
     method: 'post',
     data: qs.stringify(data)
   })
 }
+// 购买机票
+export function buy(data) {
+  return request({
+    url: '/',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+

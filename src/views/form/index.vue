@@ -50,9 +50,9 @@
   import { getform, deleteform } from '../../api/user'
   export default {
     mounted() {
-      // getform (sessionStorage.getItem('id')).then(response => {
-      //   this.ticketList = response
-      // })
+      getform (sessionStorage.getItem('id')).then(response => {
+        this.ticketList = response
+      })
     },
     computed: {
       ...mapGetters([

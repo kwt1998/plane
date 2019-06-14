@@ -90,7 +90,7 @@
                 <svg-icon icon-class="danxiangjiantou"/>
                 {{ ticket.destination }}
                 <span style="float: right"><svg-icon icon-class="renminbi"/>
-                  <span style="color: #f30300">443</span></span>
+                  <span style="color: #f30300">{{ ticket.price }}</span></span>
               </h4>
             </div>
             <h3 v-if="check" style="margin: 0px">
@@ -117,12 +117,12 @@
       </el-collapse-transition>
       <el-collapse-transition>
         <el-card v-if="!check" style="background: #f5faff; margin-top: 10px">
-          <el-radio-group v-model="radio">
-            <el-radio :label="1">经济舱</el-radio>
-            <el-radio :label="2">普通舱</el-radio>
-            <el-radio :label="3">头等舱</el-radio>
+          <el-radio-group v-model="payForm.seat">
+            <el-radio :label="0">经济舱</el-radio>
+            <el-radio :label="1">普通舱</el-radio>
+            <el-radio :label="2">头等舱</el-radio>
           </el-radio-group>
-          <span style="float: right; font-size: 13px">剩余：10张</span>
+          <!--<span style="float: right; font-size: 13px">剩余：{{ ticketList[number].price[payForm.seat] }}张</span>-->
           <h5>乘机人</h5>
           <el-button
             v-for="(item, index) in passengers"
@@ -170,7 +170,7 @@
           </span>
           <h5 style="margin-top: 30px">总金额：
             <svg-icon icon-class="renminbi"/>
-            <span style="color: red">443</span></h5>
+            <span style="color: red">{{total}}</span></h5>
           <div style="margin-top: 40px">
             <h5>选择支付方式</h5>
             <el-radio-group v-model="pay">
@@ -193,8 +193,14 @@
 </template>
 
 <script>
-  import { searchticket } from '../../api/user'
+  import { searchticket, buy } from '../../api/user'
+  import { mapGetters } from 'vuex'
   export default {
+    computed: {
+      ...mapGetters([
+        'name'
+      ])
+    },
     data() {
       return {
         show3: false,
@@ -209,7 +215,7 @@
         total: 0,
         page: {
           page_index: 1,
-          page_total: 10
+          page_total: 10,
         },
         sortForm: {
           departuredate: '',
@@ -241,28 +247,23 @@
             label: '大连'
           }]
         }],
-        ticketList: [
-          // {
-          //   startcity: '上海1',
-          //   endcity: '北京',
-          //   starttime: '19:45',
-          //   endtime: '21:30',
-          //   price: '443',
-          //   company: '南方航空',
-          //   ID: 'MU3366'
-          // },
-        ],
+        ticketList: [],
         activities: [{
           content: '虹桥机场',
-          timestamp: '2018-04-13  10:25'
+          timestamp: ''
         }, {
           content: '北京机场',
-          timestamp: '2018-04-11 12:00'
+          timestamp: ''
         }],
         passengers: [
-          { name: 'harry', number: '360481192839283' }
+          { name: sessionStorage.getItem('name'), number: '360481192839283' }
         ],
-        newpassenger: { name: '', number: '' }
+        newpassenger: { name: '', number: '' },
+        payForm: {
+          passengers: [],
+          planeId: '',
+          seat: ''
+        }
       }
     },
     methods: {
@@ -274,6 +275,7 @@
           if (!this.show3) {
             searchticket(this.sortForm).then(response => {
               this.ticketList = response
+              this.page.page_total = this.ticketList.length
             })
             this.show3 = !this.show3
             this.first = false
@@ -289,20 +291,34 @@
         })
       },
       reserve(index) {
+        this.activities[0].timestamp = this.ticketList[this.number].departuretime
+        this.activities[1].timestamp = this.ticketList[this.number].landingtime
         this.check = !this.check
         this.number = index
         freshtotal()
       },
       submit() {
         if (this.pay){
+          this.payForm.passengers = this.passengers
+          this.payForm.planeId = sessionStorage.getItem('id')
           this.$confirm(' 确认支付', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$message({
-              type: 'success',
-              message: '支付成功!'
+            buy(this.payForm).then(response => {
+              if(response === 1) {
+                this.$message({
+                  type: 'success',
+                  message: '支付成功!'
+                })
+              }
+              else {
+                this.$message({
+                  type: 'success',
+                  message: '剩余票数不足，支付失败'
+                })
+              }
             })
             // })
           }).catch(() => {
