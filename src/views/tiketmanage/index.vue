@@ -221,28 +221,28 @@
           })
         })
       },
-      // addticket() {
-      //    this.dialogVisible = true
-      // },
-      // sendticket() {
-      //   this.$confirm('添加航班', '提示', {
-      //     confirmButtonText: '确定',
-      //     cancelButtonText: '取消',
-      //     type: 'warning'
-      //   }).then(() => {
-      //     addplane(this.addForm).then(response => {
-      //       this.$message({
-      //         type: 'success',
-      //         message: '删除成功!'
-      //       })
-      //     })
-      //   }).catch(() => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '已取消删除'
-      //     })
-      //   })
-      // }
+      addticket() {
+         this.dialogVisible = true
+      },
+      sendticket() {
+        this.$confirm('添加航班', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          addplane(this.addForm).then(response => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      }
     }
   }
 </script>

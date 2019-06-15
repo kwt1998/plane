@@ -111,7 +111,7 @@ export function logout() {
 
 // 注册
 export function sign(data) {
-  console.log('sign'+qs.stringify(data))
+  console.log('sign'+ qs.stringify(data))
   return request({
     url: '/UserRegister',
     method: 'post',

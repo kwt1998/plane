@@ -1,5 +1,5 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, getcompanyInfo } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import constantRoutes from '@/router/index'
 import Layout from '@/layout'
@@ -161,21 +161,32 @@ login: function({ dispatch, commit }, userInfo) {
       //   //   message: '修改成功!'
       //   // })
       // }
-      getInfo(sessionStorage.getItem('id'))
-        .then(response => {
-          console.log(response)
-          commit('SET_NAME', response.name)
-          commit('SET_AVATAR', response.avatar)
-          commit('SET_SEX', response.sex)
-          commit('SET_AGE', response.age)
-          commit('SET_MAIL', response.email)
-          commit('SET_PHONE', response.userphone)
-          sessionStorage.setItem('name', state.name)
-          sessionStorage.setItem('mail', state.mail)
-          sessionStorage.setItem('phone', state.phone)
-          sessionStorage.setItem('sex', state.sex)
-          sessionStorage.setItem('age', state.age)
-        })
+      if(sessionStorage.getItem('type') === '1') {
+        getInfo(sessionStorage.getItem('id'))
+          .then(response => {
+            console.log(response)
+            commit('SET_NAME', response.name)
+            commit('SET_AVATAR', response.avatar)
+            commit('SET_SEX', response.sex)
+            commit('SET_AGE', response.age)
+            commit('SET_MAIL', response.email)
+            commit('SET_PHONE', response.userphone)
+            sessionStorage.setItem('name', state.name)
+            sessionStorage.setItem('mail', state.mail)
+            sessionStorage.setItem('phone', state.phone)
+            sessionStorage.setItem('sex', state.sex)
+            sessionStorage.setItem('age', state.age)
+          })
+      }
+      else if (sessionStorage.getItem('type') === '2')
+      {
+        getcompanyInfo(sessionStorage.getItem('id'))
+          .then(response => {
+            console.log(response)
+            commit('SET_NAME', response.name)
+            sessionStorage.setItem('name', state.name)
+          })
+      }
       dispatch('setroutes')
       resolve()
     }).catch(error => {

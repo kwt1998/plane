@@ -295,7 +295,7 @@
         this.activities[1].timestamp = this.ticketList[this.number].landingtime
         this.check = !this.check
         this.number = index
-        freshtotal()
+        this.freshtotal()
       },
       submit() {
         if (this.pay){
